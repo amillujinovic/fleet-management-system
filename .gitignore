@@ -1,0 +1,24 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+
+# Python / FastAPI / ML
+__pycache__/
+*.py[cod]
+.env
+venv/
+*.pkl
+*.h5
+
+# Flutter
+.dart_tool/
+build/
+.pub/
+android/.gradle/
+ios/Pods/
+
+# OS/System files
+Thumbs.db
+.DS_Store
