@@ -1,0 +1,16 @@
+services:
+  ml:
+    build: 
+      context: ./ML
+    ports:
+        - "8000:8000"
+  backend:
+    build: 
+      context: ./dotnet-backend/projekatFlutter
+    ports: 
+        - "8080:8080"
+  frontend:
+    build: 
+      context: ./frontend
+    ports:
+        - "3000:80"
