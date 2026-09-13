@@ -3,7 +3,7 @@
 **/obj/
 *.user
 *.suo
-
+*.env
 # Python / FastAPI / ML
 __pycache__/
 *.py[cod]
