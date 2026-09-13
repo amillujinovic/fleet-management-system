@@ -1,18 +1,43 @@
 services:
   ml:
-    build: 
+    build:
       context: ./ML
     ports:
-        - "8000:8000"
+      - "8000:8000"
+
   backend:
-    build: 
+    build:
       context: ./dotnet-backend/projekatFlutter
-    ports: 
-        - "8080:8080"
+    ports:
+      - "8080:8080"
     environment:
       PythonServiceUrl: "http://ml:8000"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=TransportDb;User Id=sa;Password=Sa123456!;TrustServerCertificate=True"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
   frontend:
-    build: 
+    build:
       context: ./frontend
     ports:
-        - "80:80"
+      - "80:80"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Sa123456!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Sa123456!' -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  sqlserver-data:
