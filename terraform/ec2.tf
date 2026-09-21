@@ -10,7 +10,7 @@ data "aws_ami" "ubuntu" {
 }
 resource "aws_key_pair" "fleet_key" {
   key_name   = "${var.app_name}-key"
-  public_key = file(pathexpand("~/.ssh/id_rsa.pub"))
+  public_key = file(pathexpand("~/.ssh/fleet_id_rsa.pub"))
 }
 
 resource "aws_instance" "fleet_ec2" {
@@ -18,6 +18,7 @@ resource "aws_instance" "fleet_ec2" {
   instance_type = "t3.micro"
   key_name      = aws_key_pair.fleet_key.key_name
   vpc_security_group_ids = [aws_security_group.fleet_subnet_group.id]
+  associate_public_ip_address = true
   user_data = file("userdata.sh")
   tags = {
     Name = "Fleet EC2"
