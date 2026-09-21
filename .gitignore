@@ -1,0 +1,30 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+*.env
+# Python / FastAPI / ML
+__pycache__/
+*.py[cod]
+.env
+venv/
+*.pkl
+*.h5
+
+# Flutter
+.dart_tool/
+build/
+.pub/
+android/.gradle/
+ios/Pods/
+#Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+.terraform.lock.hcl
+
+# OS/System files
+Thumbs.db
+.DS_Store
