@@ -15,10 +15,10 @@ resource "aws_key_pair" "fleet_key" {
 
 resource "aws_instance" "fleet_ec2" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
   key_name      = aws_key_pair.fleet_key.key_name
   vpc_security_group_ids = [aws_security_group.fleet_subnet_group.id]
-  #user_data = file("user_data.sh")
+  user_data = file("userdata.sh")
   tags = {
     Name = "Fleet EC2"
   }

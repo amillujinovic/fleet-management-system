@@ -48,7 +48,7 @@ resource "aws_s3_bucket_policy" "fleet_frontend" {
 
   depends_on = [aws_s3_bucket_public_access_block.fleet_frontend]
 }
-
+/*
 resource "aws_cloudfront_distribution" "fleet_frontend" {
   enabled             = true
   default_root_object = "index.html"
@@ -95,3 +95,4 @@ resource "aws_cloudfront_distribution" "fleet_frontend" {
     Name = "${var.app_name}-cloudfront"
   }
 }
+*/
