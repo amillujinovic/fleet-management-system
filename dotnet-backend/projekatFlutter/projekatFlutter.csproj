@@ -30,6 +30,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
 <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
 <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8" />
+<PackageReference Update="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+  <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
     </ItemGroup>
 
 </Project>
