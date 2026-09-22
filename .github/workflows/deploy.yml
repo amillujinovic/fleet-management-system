@@ -31,7 +31,7 @@ jobs:
     needs: [build-and-push]        
     steps:
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1   
+        uses: appleboy/ssh-action@v1    
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
@@ -46,7 +46,6 @@ jobs:
                 environment:
                   - PythonServiceUrl=http://ml:8000
                   - ConnectionStrings__DefaultConnection=Host=db;Database=TransportDb;Username=postgres;Password=Fleet123!
-
                 depends_on:
                   - ml
                   - db
@@ -63,7 +62,9 @@ jobs:
                 ports:
                   - "5432:5432"
                 volumes:
-                  - pgdata: /var/lib/postgresql/data
+                  - pgdata:/var/lib/postgresql/data
+            volumes:
+              pgdata:
             COMPOSE
             cd ~
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PAT }}
@@ -98,8 +99,8 @@ jobs:
         run: |
           aws s3 sync ./frontend/build/web s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
-      - name: Invalidate CloudFront cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+      # - name: Invalidate CloudFront cache
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #       --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+      #       --paths "/*"
