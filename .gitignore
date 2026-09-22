@@ -9,7 +9,6 @@ __pycache__/
 *.py[cod]
 .env
 venv/
-*.pkl
 *.h5
 
 # Flutter
