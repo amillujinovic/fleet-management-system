@@ -45,12 +45,25 @@ jobs:
                   - "5000:80"
                 environment:
                   - PythonServiceUrl=http://ml:8000
+                  - ConnectionStrings__DefaultConnection=Host=db;Database=TransportDb;Username=postgres;Password=Fleet123!
+
                 depends_on:
                   - ml
+                  - db
               ml:
                 image: ${{ secrets.DOCKERHUB_USERNAME }}/ml-image:latest
                 ports:
                   - "8000:8000"
+              db:
+                image: postgres:15-alpine
+                environment:
+                  - POSTGRES_DB=TransportDb
+                  - POSTGRES_USER=postgres
+                  - POSTGRES_PASSWORD=Fleet123!
+                ports:
+                  - "5432:5432"
+                volumes:
+                  - pgdata: /var/lib/postgresql/data
             COMPOSE
             cd ~
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PAT }}
