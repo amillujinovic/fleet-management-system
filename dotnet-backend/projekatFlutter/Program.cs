@@ -56,9 +56,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Database Context
-builder.Services.AddDbContext<ApiDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddDbContext<TransportDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 builder.Services.AddScoped<IRepository<ObdReading, long>, Repository<ObdReading, long>>();
