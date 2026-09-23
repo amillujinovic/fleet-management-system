@@ -1,6 +1,7 @@
 ﻿namespace projekatFlutter.Data;
 using Microsoft.EntityFrameworkCore;
 using projekatFlutter.Models;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 public class ApiDbContext : DbContext
@@ -20,6 +21,25 @@ public class ApiDbContext : DbContext
     public DbSet<VehicleLocation> VehicleLocations { get; set; }
     public DbSet<ObdReading> ObdReadings { get; set; }
     public DbSet<DriversNote> DriversNotes { get; set; }
+
+    // Npgsql prima samo UTC za timestamptz, a frontend salje datume bez zone.
+    // Svaki DateTime se prije upisa pretvara u UTC.
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<DateTime>().HaveConversion<UtcDateTimeConverter>();
+        configurationBuilder.Properties<DateTime?>().HaveConversion<UtcDateTimeConverter>();
+    }
+
+    private class UtcDateTimeConverter : ValueConverter<DateTime, DateTime>
+    {
+        public UtcDateTimeConverter() : base(
+            v => v.Kind == DateTimeKind.Utc ? v
+               : v.Kind == DateTimeKind.Local ? v.ToUniversalTime()
+               : DateTime.SpecifyKind(v, DateTimeKind.Utc),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc))
+        { }
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
