@@ -43,7 +43,9 @@ namespace projekatFlutter.Data
                 }
             };
 
-            context.Users.AddRange(users);
+            // Ne dupliraj korisnike ako je raniji seed pao nakon ovog koraka
+            var existingEmails = context.Users.Select(u => u.Email).ToHashSet();
+            context.Users.AddRange(users.Where(u => !existingEmails.Contains(u.Email)));
             context.SaveChanges();
 
             // ═══════════════════════════════════════════════════════════
@@ -65,7 +67,7 @@ namespace projekatFlutter.Data
                     FuelTankCapacity = 400,
                     LoadCapacity = 18000,
                     AssignedDriverId = users[0].Id,
-                    PurchaseDate = new DateTime(2020, 3, 15),
+                    PurchaseDate = new DateTime(2020, 3, 15, 0, 0, 0, DateTimeKind.Utc),
                     CreatedAt = DateTime.UtcNow
                 },
                 new Vehicle
@@ -82,7 +84,7 @@ namespace projekatFlutter.Data
                     FuelTankCapacity = 380,
                     LoadCapacity = 20000,
                     AssignedDriverId = users[1].Id,
-                    PurchaseDate = new DateTime(2019, 6, 20),
+                    PurchaseDate = new DateTime(2019, 6, 20, 0, 0, 0, DateTimeKind.Utc),
                     CreatedAt = DateTime.UtcNow.AddMonths(-6)
                 },
                 new Vehicle
@@ -99,7 +101,7 @@ namespace projekatFlutter.Data
                     FuelTankCapacity = 390,
                     LoadCapacity = 19000,
                     AssignedDriverId = null,  // Nema vozača
-                    PurchaseDate = new DateTime(2018, 1, 10),
+                    PurchaseDate = new DateTime(2018, 1, 10, 0, 0, 0, DateTimeKind.Utc),
                     CreatedAt = DateTime.UtcNow.AddYears(-1)
                 },
                 new Vehicle
@@ -116,7 +118,7 @@ namespace projekatFlutter.Data
                     FuelTankCapacity = 60,
                     LoadCapacity = 800,
                     AssignedDriverId = users[0].Id,
-                    PurchaseDate = new DateTime(2021, 9, 5),
+                    PurchaseDate = new DateTime(2021, 9, 5, 0, 0, 0, DateTimeKind.Utc),
                     CreatedAt = DateTime.UtcNow.AddMonths(-3)
                 },
                 new Vehicle
@@ -132,7 +134,7 @@ namespace projekatFlutter.Data
                     FuelTankCapacity = 300,
                     LoadCapacity = 12000,
                     AssignedDriverId = null,
-                    PurchaseDate = new DateTime(2017, 4, 12),
+                    PurchaseDate = new DateTime(2017, 4, 12, 0, 0, 0, DateTimeKind.Utc),
                     CreatedAt = DateTime.UtcNow.AddYears(-2)
                 }
             };
