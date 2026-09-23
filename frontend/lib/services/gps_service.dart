@@ -28,13 +28,14 @@ class GpsPoint
 class GpsService {
   Future<GpsPoint?> getLatestForVehicle(int vehicleId) async {
     final response= await ApiClient.get('Gps/Vehicle/$vehicleId/Latest');
+    if (response.statusCode == 404) return null; // vozilo jos nema GPS podataka
     final data=ApiClient.parseResponse(response);
     if (data == null) return null;
     return GpsPoint.fromJson(data);
   }
   Future<List<GpsPoint>> getHistory(int vehicleId, {int maxResults = 100}) async
   {
-    final now=DateTime.now();
+    final now=DateTime.now().toUtc(); // Npgsql trazi UTC za timestamptz
     final body = {
     'vehicleId': vehicleId,
     // širok raspon (jučer -> sutra) da uhvati sve tačke
