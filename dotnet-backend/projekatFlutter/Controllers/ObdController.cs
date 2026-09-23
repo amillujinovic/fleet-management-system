@@ -35,7 +35,9 @@ namespace projekatFlutter.Controllers
 
                 AnomalyScore=null,
                 IsAnomaly = null,
-                RecordedAt = dto.RecordedAt ?? DateTime.UtcNow,
+                RecordedAt = dto.RecordedAt.HasValue
+                    ? DateTime.SpecifyKind(dto.RecordedAt.Value, DateTimeKind.Utc) // Npgsql prima samo UTC
+                    : DateTime.UtcNow,
                 ReceivedAt = DateTime.UtcNow
 
             };
