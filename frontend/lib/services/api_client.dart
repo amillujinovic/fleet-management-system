@@ -4,7 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiClient
 {
-  static final String baseUrl = 'http://fleet-management-api.azurewebsites.net/api';
+  static const String baseUrl = String.fromEnvironment(
+    'API_URL',
+    defaultValue: 'http://100.58.207.64:8080/api',
+  );
   static Future<String?> _getToken() async
   {
     final prefs = await SharedPreferences.getInstance();
