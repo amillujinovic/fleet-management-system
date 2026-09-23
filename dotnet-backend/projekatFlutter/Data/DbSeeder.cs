@@ -1,4 +1,5 @@
-﻿using projekatFlutter.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using projekatFlutter.Models;
 
 namespace projekatFlutter.Data
 {
@@ -44,8 +45,11 @@ namespace projekatFlutter.Data
             };
 
             // Ne dupliraj korisnike ako je raniji seed pao nakon ovog koraka
-            var existingEmails = context.Users.Select(u => u.Email).ToHashSet();
-            context.Users.AddRange(users.Where(u => !existingEmails.Contains(u.Email)));
+            // i koristi postojeceg korisnika (njegov Id) za vozila ispod
+            users = users
+                .Select(u => context.Users.FirstOrDefault(e => e.Email == u.Email) ?? u)
+                .ToList();
+            context.Users.AddRange(users.Where(u => context.Entry(u).State == EntityState.Detached));
             context.SaveChanges();
 
             // ═══════════════════════════════════════════════════════════
