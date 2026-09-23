@@ -106,8 +106,7 @@ class _GpsMapScreenState extends State<GpsMapScreen>
               initialZoom: 13,),
             children: [
               TileLayer(
-              urlTemplate: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
-              subdomains: const ['a', 'b', 'c', 'd'],
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
               userAgentPackageName: 'com.fleet_management_app',
               ),
               PolylineLayer(polylines: _buildRouteSegments()), // NOVO - ruta
