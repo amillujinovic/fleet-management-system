@@ -90,6 +90,7 @@ app.UseCors("AllowAll");
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApiDbContext>();
+    context.Database.EnsureCreated();
 
     if (context.Vehicles.Any())
     {

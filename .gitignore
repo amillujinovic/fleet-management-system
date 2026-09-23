@@ -27,3 +27,6 @@ crash.log
 # OS/System files
 Thumbs.db
 .DS_Store
+# .NET publish output / archives
+**/publish/
+dotnet-backend/**/*.zip

@@ -1,12 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 COPY projekatFlutter.csproj .
 RUN dotnet restore
 COPY . .
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish -c Release -o /out --no-restore
 ###
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app/publish .
-CMD [ "dotnet", "projekatFlutter.dll"]
+COPY --from=build /out .
 EXPOSE 8080
+CMD [ "dotnet", "projekatFlutter.dll"]
