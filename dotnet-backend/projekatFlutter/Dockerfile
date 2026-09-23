@@ -3,7 +3,6 @@ WORKDIR /app
 COPY projekatFlutter.csproj .
 RUN dotnet restore
 COPY . .
-RUN dotnet build
 RUN dotnet publish -c Release -o /app/publish
 ###
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
