@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "fleet_frontend" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "fleet_frontend" { 
+resource "aws_s3_bucket_website_configuration" "fleet_frontend" {
   # Flutter je single page app - sve rute idu na index.html (sve se učitava u browser samo jednom)
   bucket = aws_s3_bucket.fleet_frontend.id
 

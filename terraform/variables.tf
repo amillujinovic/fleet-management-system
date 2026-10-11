@@ -1,9 +1,9 @@
 variable "aws_region" {
-    default="us-east-1"
+  default = "us-east-1"
 }
 variable "app_name" {
-    default="fleet-management"
+  default = "fleet-management"
 }
 variable "instance_type" {
-    default="t3.micro"
+  default = "t3.micro"
 }
