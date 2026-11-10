@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  namespace: fleet
+  name: ml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml
+  template:
+    metadata:
+      labels:
+        app: ml
+    spec:
+      containers:
+        - name: ml
+          image: amillujinovic/ml-image:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml
+  namespace: fleet
+spec:
+  selector:
+    app: ml
+  ports:
+    - port: 8000
+      targetPort: 8000

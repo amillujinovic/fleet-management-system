@@ -30,3 +30,6 @@ Thumbs.db
 # .NET publish output / archives
 **/publish/
 dotnet-backend/**/*.zip
+k8s/01-postgres-secret.yaml
+k8s/03-backend-secret.yaml
+.claude/
