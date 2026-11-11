@@ -43,6 +43,16 @@ spec:
               memory: 256Mi
             limits:
               memory: 512Mi
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "fleet", "-d", "fleet"]
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "fleet", "-d", "fleet"]
+            periodSeconds: 10
+            failureThreshold: 6
+         
   volumeClaimTemplates:
     - metadata:
         name: data
