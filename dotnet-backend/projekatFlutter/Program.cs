@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks; // NOVO
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -24,8 +25,6 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
-// Add services to the container
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -84,8 +83,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpClient();
+
+// Health checks: "ready" provjerava bazu, "live" samo da proces odgovara
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApiDbContext>("database", tags: new[] { "ready" });
+
 var app = builder.Build();
 app.UseCors("AllowAll");
+
 // Seed Data
 using (var scope = app.Services.CreateScope())
 {
@@ -116,5 +121,17 @@ app.UseSwaggerUI();
 
 app.UseAuthorization();
 app.MapControllers();
+
+// NOVO: liveness, ne provjerava ništa osim da proces odgovara
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = _ => false
+}).AllowAnonymous();
+
+// NOVO: readiness, provjerava bazu
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+}).AllowAnonymous();
 
 app.Run();
